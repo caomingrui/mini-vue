@@ -1,0 +1,5 @@
+export { default as reactive } from './reactive'
+export { default as Watcher } from './watcher'
+export { default as watch } from './watch'
+export { default as render } from './render'
+export { default as computed } from './computed'
