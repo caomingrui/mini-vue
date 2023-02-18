@@ -9,9 +9,9 @@ const htmlPlugin = new HtmlPlugin({
 const baseConfig = {
     mode: 'development',
     devtool: 'source-map',
-    entry: ['./main.ts'],
+    entry: ['./main.tsx'],
     resolve: {
-        extensions: ['.ts','.js']
+        extensions: ['.ts', '.js', '.tsx']
     },
     module: {
         rules: [{
@@ -24,7 +24,7 @@ const baseConfig = {
             }]
         },
             {
-                test: /\.js|.ts$/,
+                test: /\.js|.ts|.tsx$/,
                 loader: 'babel-loader',
                 exclude: /node_modules/,
                 options: {
@@ -32,8 +32,14 @@ const baseConfig = {
                         targets: {
                             browsers: ['last 2 versions']
                         }
-                    }], '@babel/preset-typescript']
-                }
+                    }], '@babel/preset-typescript'],
+                    plugins: [
+                        ['@babel/plugin-transform-react-jsx', {
+                            "pragma": "h", // default pragma is React.createElement
+                            // "pragmaFrag": "Preact.Fragment", // default is React.Fragment
+                            "throwIfNamespace": false // defaults to true
+                        }]]
+                },
             }]
     },
     output: {

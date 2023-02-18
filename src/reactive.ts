@@ -68,7 +68,7 @@ const proxyData = (data: object, baseHandlers: ProxyHandler<any>) => {
 }
 
 
-export function doWatch<T = any> (source: WatchEffect<T> | object, callback?: WatchCallback) {
+export function doWatch<T = any> (source: WatchEffect<T> | object | WatchEffect<T>[], callback?: WatchCallback) {
     const getter = () => {
         if (isRef(source)) {
             return source.value;
@@ -76,21 +76,28 @@ export function doWatch<T = any> (source: WatchEffect<T> | object, callback?: Wa
         else if (isFunction(source)) {
             return source();
         }
+        else if (Array.isArray(source)) {
+            source.forEach(item => {
+                if (isRef(item)) {
+                    return item.value;
+                }
+                else if (isFunction(item)) {
+                    return item();
+                }
+            })
+        }
     }
 
-    let scheduler = null;
+
     let oldValue: any = null;
-    if (callback) {
-        scheduler = function () {
-            if (!effect.active) return;
+    let scheduler = function () {
+        if (!effect.active) return;
+        if (callback) {
             let newValue = effect.run();
             callback(newValue, oldValue);
             oldValue = newValue;
         }
-    }
-    else {
-        scheduler = function () {
-            if (!effect.active) return;
+        else {
             effect.run();
         }
     }

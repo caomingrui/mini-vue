@@ -9,7 +9,7 @@ export type WatchCallback<OldT = any, PreT = any> = (value: OldT, oldValue: PreT
 
 type computedType<T = any> = ReactiveEffect<T>;
 
-export type WatchEffect<T> = (() => T) | ComputedRefImplType;
+export type WatchEffect<T = any> = (() => T) | ComputedRefImplType;
 
 
 export type ComputedRefImplType = {

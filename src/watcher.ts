@@ -2,8 +2,8 @@ import { doWatch } from './reactive'
 import type { WatchEffect } from "./types";
 
 
-function Watcher <T = any>(effect: WatchEffect<T>) {
+function watchEffect <T = any>(effect: WatchEffect) {
     doWatch<T>(effect)
 }
 
-export default Watcher;
+export default watchEffect;
